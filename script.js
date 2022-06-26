@@ -1,8 +1,7 @@
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
+/*
 let activityLog = ''; //each user-click should append something here
-
-
 
 //check log after every button press, (at updateLog(), or 
 //a new eventListener
@@ -29,12 +28,30 @@ function checkLog() {
         //if so, check again to grab a number
     }
 }
+*/
+//trying to implement a state machine (calc_state_machine.png)
+//let's begin with accepting an input of a digit, and rejecting
+//all other inputs
 
-//    if it's in the following format:
-//    or maybe if '=' was pressed
-//    `<number>` , `<operation>`, `<number>`, `<equals(=)>`
-//    pass these variables to operate()
-//    update display with the result.
+
+//start by listening to input (addEventListener to button)
+
+let number1 = '';//appending digits acts like contcatenation,
+//not addition.
+
+function listenToInput() {
+    while (isDigit(input)) { //
+        //append to a number
+        number1 = input.toString(); //appending digits works like
+        //contacetantion, not addition
+        //repeat 
+    }
+}
+
+function isDigit(input) { //attach this to a button
+    return (symbolMap[input] == 'digit');
+}
+
 
 for (button of buttons) {
     button.addEventListener('click', updateLog);
