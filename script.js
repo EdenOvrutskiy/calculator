@@ -1,12 +1,17 @@
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
-/*
-let activityLog = ''; //each user-click should append something here
 
-//check log after every button press, (at updateLog(), or 
-//a new eventListener
+//TODO: how is the "start" state different than the 
+//'number' state? should I remove it?
 
-//for log reading: each symbol should be categorized:
+//trying to implement a state machine (calc_state_machine.png)
+//let's begin with accepting an input of a digit, and rejecting
+//all other inputs
+
+
+//start by listening to input (addEventListener to button)
+
+//for input parsing: each symbol should be categorized:
 //number, operation, or equals
 const symbolMap = {};
 const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -19,33 +24,34 @@ for (operator of operators) {
 }
 symbolMap['='] = 'equals';
 
-function checkLog() {
-    //log should be checked from latest to earliest input
-    for (let i = activityLog.length; i >= 0; ++i) {
-        //if the last operator was '='
-        //check if the a number was before
-        //once a non-number input is found, check if it's an operator
-        //if so, check again to grab a number
-    }
-}
-*/
-//trying to implement a state machine (calc_state_machine.png)
-//let's begin with accepting an input of a digit, and rejecting
-//all other inputs
-
-
-//start by listening to input (addEventListener to button)
-
 let number1 = '';//appending digits acts like contcatenation,
 //not addition.
+let number2 = '';
+let operatorInput = '';
 
-function listenToInput() {
-    while (isDigit(input)) { //
-        //append to a number
-        number1 = input.toString(); //appending digits works like
-        //contacetantion, not addition
-        //repeat 
+
+let states = ['start', 'number', 'number-operation',
+    'number-operation-number'];
+
+let state = 'start';
+function processInput(pointerEvent) {
+    const input = pointerEvent.currentTarget.textContent;
+    if (state == 'start' || state == 'number') {
+        if (isDigit(input)) { //
+            //append to a number
+            number1 = number1 + input.toString(); //appending digits works like
+            //                          //contacetantion, not addition
+            state = 'number';
+        }
+        else if (isOperator(input)) {
+            state = 'number-operation';
+            operatorInput = input;
+        }
     }
+}
+
+function isOperator(input) { //attach this to a button
+    return (symbolMap[input] == 'operator');
 }
 
 function isDigit(input) { //attach this to a button
@@ -54,7 +60,7 @@ function isDigit(input) { //attach this to a button
 
 
 for (button of buttons) {
-    button.addEventListener('click', updateLog);
+    button.addEventListener('click', processInput);
     button.addEventListener('click', populateDisplay);
 }
 
