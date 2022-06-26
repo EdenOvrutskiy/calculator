@@ -1,15 +1,41 @@
-//avoid shared variables, minimize parameters
-
-
-//goal: cause a pressed button's text to appear on the
-//  display element
-/////////////// 
-//mandatory variables
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 let activityLog = ''; //each user-click should append something here
 
-//mandatory functions
+
+
+//check log after every button press, (at updateLog(), or 
+//a new eventListener
+
+//for log reading: each symbol should be categorized:
+//number, operation, or equals
+const symbolMap = {};
+const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+for (digit of digits) {
+    symbolMap[digit] = 'digit';
+}
+const operators = ['+', '-', '*', '/'];
+for (operator of operators) {
+    symbolMap[operator] = 'operator';
+}
+symbolMap['='] = 'equals';
+
+function checkLog() {
+    //log should be checked from latest to earliest input
+    for (let i = activityLog.length; i >= 0; ++i) {
+        //if the last operator was '='
+        //check if the a number was before
+        //once a non-number input is found, check if it's an operator
+        //if so, check again to grab a number
+    }
+}
+
+//    if it's in the following format:
+//    or maybe if '=' was pressed
+//    `<number>` , `<operation>`, `<number>`, `<equals(=)>`
+//    pass these variables to operate()
+//    update display with the result.
+
 for (button of buttons) {
     button.addEventListener('click', updateLog);
     button.addEventListener('click', populateDisplay);
@@ -25,7 +51,7 @@ function populateDisplay(pointerEvent) {
     //extract button's element from addEventListener
     const button = pointerEvent.target;
     //grab button's text
-    const buttonText = button.textContent; 
+    const buttonText = button.textContent;
     //overwerite the display with the button's value
     display.textContent = buttonText;
 }
