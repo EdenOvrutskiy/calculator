@@ -91,3 +91,21 @@ const divide = function (dividend, divisor) {
         return "ERROR - cannot divide by 0";
     }
 };
+
+function operate(operator, number, number2) {
+    if (operator == "+") {
+        return add(number, number2);
+    }
+    else if (operator == "-") {
+        return subtract(number, number2);
+    }
+    else if (operator == "*") {
+        return multiply(number, number2);
+    }
+    else if (operator == "/") {
+        return divide(number, number2);
+    }
+    else {
+        return "ERROR - bad operator for operate function";
+    }
+}
