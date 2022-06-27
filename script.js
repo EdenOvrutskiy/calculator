@@ -2,14 +2,21 @@ const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 
 //TODO: 
-//implementing states and transitions in if-else 
-//statements
+//reduce code duplication 
+//no floating-point numbers?
+//enable a chain of computation
+//something other than 'start' -> like some error message..
+//move from "states"/ "state machine" to some code
+//that better describes itself?
+
+
+//////////////
 
 //for input parsing: each symbol should be categorized:
 //number, operation, or equals
 const symbolMap = {};
 const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-for (digit of digits) {
+for (let digit of digits) {
     symbolMap[digit] = 'digit';
 }
 const operators = ['+', '-', '*', '/'];
@@ -18,13 +25,16 @@ for (let operator of operators) {
 }
 symbolMap['='] = 'equals';
 
-let number1 = '';//appending digits acts like contcatenation,
-//not addition.
-let number2 = '';
+let firstNumber = '';//a string: appending digits acts like 
+//contcatenation, not addition.
+let secondNumber = '';
 let operator = '';
 
 
-let states = ['start', 'number', 'number-operation',
+//the calculator's state determines what it currently 
+//'remembers',and how it will respond to incoming input.
+//see calc_state_machine.png for a visual representation
+const states = ['start', 'number', 'number-operation',
     'number-operation-number'];
 
 let state = 'start';
@@ -33,58 +43,66 @@ function processInput(pointerEvent) {
     if (state == 'start') {
         if (isDigit(input)) { //
             //append to a number
-            number1 = number1 + input.toString(); //appending 
+            firstNumber = firstNumber + input.toString(); //appending 
             //digits works like contacetantion, not addition
             state = 'number';
+            display.textContent = firstNumber;
+        }
+        else {
+            resetCalculator();
         }
     }
     else if (state == 'number') {
         if (isDigit(input)) { //
-            number1 = number1 + input.toString();
+            firstNumber = firstNumber + input.toString();
             state = 'number';
+            display.textContent = firstNumber;
         }
         else if (isOperator(input)) {
             operator = input;
             state = 'number-operation';
+            display.textContent = firstNumber + operator;
         }
         else {
-            number1 = '';
-            state = 'start';
+            resetCalculator();
         }
     }
     else if (state == 'number-operation') {
         if (isDigit(input)) { //
-            number2 = number2 + input.toString();
+            secondNumber = secondNumber + input.toString();
             state = 'number-operation-number';
+            display.textContent = firstNumber + operator
+                + secondNumber;
         }
         else {
-            number1 = '';
-            number2 = '';
-            operator = '';
-            state = 'start';
+            resetCalculator();
         }
     }
     else if (state == 'number-operation-number') {
         if (isDigit(input)) { //
-            number2 = number2 + input.toString();
+            secondNumber = secondNumber + input.toString();
             state = 'number-operation-number';
+            display.textContent = firstNumber + operator
+                + secondNumber;
         }
         else if (input == '=') {
             //compute and display
-            let result = operate(operator, number1, number2);
-            console.log(result);
-            resetCalculator()
+            let result = operate(operator, firstNumber, secondNumber);
+            resetCalculator();
+            display.textContent = result;
         }
         else {
-            resetCalculator()
+            resetCalculator();
         }
     }
+
 }
 function resetCalculator() {
-    number1 = '';
-    number2 = '';
+    firstNumber = '';
+    secondNumber = '';
     operator = '';
     state = 'start';
+    display.textContent = 'start';
 }
 
 
@@ -100,7 +118,6 @@ function isDigit(input) { //attach this to a button
 
 for (button of buttons) {
     button.addEventListener('click', processInput);
-    button.addEventListener('click', populateDisplay);
 }
 
 function updateLog(pointerEvent) {
@@ -108,16 +125,6 @@ function updateLog(pointerEvent) {
     button = pointerEvent.target;//extract button DOM from click event
     activityLog += button.textContent; //append it's content to a log
 }
-
-function populateDisplay(pointerEvent) {
-    //extract button's element from addEventListener
-    const button = pointerEvent.target;
-    //grab button's text
-    const buttonText = button.textContent;
-    //overwerite the display with the button's value
-    display.textContent = buttonText;
-}
-
 
 function add(addend, addend2) {
     return (parseInt(addend) + parseInt(addend2));
@@ -140,18 +147,18 @@ const divide = function (dividend, divisor) {
     }
 };
 
-function operate(operator, number, number2) {
+function operate(operator, number, secondNumber) {
     if (operator == "+") {
-        return add(number, number2);
+        return add(number, secondNumber);
     }
     else if (operator == "-") {
-        return subtract(number, number2);
+        return subtract(number, secondNumber);
     }
     else if (operator == "*") {
-        return multiply(number, number2);
+        return multiply(number, secondNumber);
     }
     else if (operator == "/") {
-        return divide(number, number2);
+        return divide(number, secondNumber);
     }
     else {
         return "ERROR - bad operator for operate function";
