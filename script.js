@@ -3,15 +3,23 @@ const buttons = document.querySelectorAll('button');
 
 //TODO: 
 
-//appending numbers to results instead of 
-//overriding - bug or feature?
+//stylize
+//flexible display might not be bad :
+//  https://michalosman.github.io/calculator/
+//  limit size of result somehow?
+//  limit calculator display size?
 
+//make buttons bigger 
+//align buttons
+//order buttons into a keypad arrangement
+
+
+//javascript
 //use typeOf in isDigit() ?
 
-//pressing '=' twice after a calculation 
-//shouldn't reset the calculator
-//  potentially will need an entirely new state just for that 
-//  feature..
+//could organize the program based on the input type,
+//instead of the various states.
+//  this could help with negating '=' effects
 
 //pressing a number and then '=' should just let the 
 //number be? ... 
@@ -24,11 +32,6 @@ const buttons = document.querySelectorAll('button');
 
 //pressing an operation instead of '=' should 
 //initial chain computation
-
-//flexible display might not be bad :
-//  https://michalosman.github.io/calculator/
-//  limit size of result somehow?
-//  limit calculator display size?
 
 //potentially get rid of "number2" variable?
 
@@ -51,6 +54,7 @@ const buttons = document.querySelectorAll('button');
 //and then a function could be run to check the state
 //depending of the object's contents
 
+
 //////////////
 
 let firstNumber = '';//a string: appending digits acts like 
@@ -67,7 +71,10 @@ const states = ['start', 'number', 'number-operation',
 let state = 'start';
 function processInput(pointerEvent) {
     const input = pointerEvent.currentTarget.textContent;
-    if (state == 'start') {
+    if (state != 'number-operation-number' && input == '=') {
+        ;//do nothing when the user accidentally pressed '='.
+    }
+    else if (state == 'start') {
         if (isDigit(input)) { //
             //append to a number
             firstNumber = firstNumber + input.toString(); //appending 
