@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'digital-clock-font';
+    src: url('fonts/digital-7.ttf');
+}
+
 body {
     margin: 0;
     display: flex;
@@ -7,24 +12,30 @@ body {
     width: 100vw;
 }
 
-.bigger-container{
-    padding: 9px;
+.bigger-container {
+    padding: 10px;
     background-color: black;
 }
 
 .container {
-    width: 50vw;
-    height: 50vh;
+    width: 250px;
+    height: 400px;
     /*border: solid black 1px;*/
 }
 
 #display {
-    text-align: center;
-    justify-content: center;
+    display: flex;
+    justify-content: right;
     align-items: center;
     height: 20%;
-    font-size: xx-large;
-    color: white;
+    font-family: digital-clock-font;
+    font-size: 50px;
+    color: black;
+    background-color: hsl(155, 100%, 77%);
+    box-sizing: border-box;
+    border: 5px solid white;
+    padding: 10px;
+
 }
 
 .buttons {
@@ -35,7 +46,7 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: space-around;
-    height: 25%; 
+    height: 25%;
 }
 
 button {
@@ -47,4 +58,9 @@ button {
     flex: 1 1 0;
     /*box-sizing: border-box;*/
     font-size: xx-large;
+    /*font-family: digital-clock-font;*/
+}
+
+#clear-button {
+    background-color: #EB9000;
 }

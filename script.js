@@ -4,6 +4,8 @@ const buttons = document.querySelectorAll('button');
 //TODO: 
 
 //stylize
+//can I remove the row div elements?
+
 //flexible display might not be bad :
 //  https://michalosman.github.io/calculator/
 //  limit size of result somehow?
@@ -11,7 +13,12 @@ const buttons = document.querySelectorAll('button');
 
 //make buttons bigger 
 //align buttons
-//order buttons into a keypad arrangement
+
+// make calculator maintain it's shape
+// instead of stretching around
+// looking for a vertical rectangle here
+
+//do I hard-code a pixel size?
 
 
 //javascript
