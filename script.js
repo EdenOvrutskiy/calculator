@@ -2,11 +2,35 @@ const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 
 //TODO: 
-//enable a chain of computation
 
-//potentially get rid of "number2"? 
-//  this might be required to make the display show a running
-//  total of calculations instead of being limited to 2 numbers
+//appending numbers to results instead of 
+//overriding - bug or feature?
+
+//use typeOf in isDigit() ?
+
+//pressing '=' twice after a calculation 
+//shouldn't reset the calculator
+//  potentially will need an entirely new state just for that 
+//  feature..
+
+//pressing a number and then '=' should just let the 
+//number be? ... 
+
+//it could re-do the last action, like some calculators
+//do..
+
+//some extra info at the top of the number - about
+//what's being computed..
+
+//pressing an operation instead of '=' should 
+//initial chain computation
+
+//flexible display might not be bad :
+//  https://michalosman.github.io/calculator/
+//  limit size of result somehow?
+//  limit calculator display size?
+
+//potentially get rid of "number2" variable?
 
 //reduce code duplication 
 
@@ -20,28 +44,19 @@ const buttons = document.querySelectorAll('button');
 //move from "states"/ "state machine" to some code
 //that better describes itself?
 
-
+//could make the program more self-describing by
+//creating an object {} with the keys [firstNumber] : ..
+//[oprator] : null / '+'
+//and that would show what each state really means
+//and then a function could be run to check the state
+//depending of the object's contents
 
 //////////////
-
-//for input parsing: each symbol should be categorized:
-//number, operation, or equals
-const symbolMap = {};
-const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-for (let digit of digits) {
-    symbolMap[digit] = 'digit';
-}
-const operators = ['+', '-', '*', '/'];
-for (let operator of operators) {
-    symbolMap[operator] = 'operator';
-}
-symbolMap['='] = 'equals';
 
 let firstNumber = '';//a string: appending digits acts like 
 //contcatenation, not addition.
 let secondNumber = '';
 let operator = '';
-
 
 //the calculator's state determines what it currently 
 //'remembers',and how it will respond to incoming input.
@@ -123,11 +138,13 @@ function resetCalculator() {
 
 
 function isOperator(input) { //attach this to a button
-    return (symbolMap[input] == 'operator');
+    const operators = ['+', '-', '*', '/'];
+    return operators.includes(input);
 }
 
 function isDigit(input) { //attach this to a button
-    return (symbolMap[input] == 'digit');
+    const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    return digits.includes(parseInt(input));
 }
 
 
