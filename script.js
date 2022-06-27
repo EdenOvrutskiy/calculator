@@ -1,15 +1,9 @@
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 
-//TODO: how is the "start" state different than the 
-//'number' state? should I remove it?
-
-//trying to implement a state machine (calc_state_machine.png)
-//let's begin with accepting an input of a digit, and rejecting
-//all other inputs
-
-
-//start by listening to input (addEventListener to button)
+//TODO: 
+//implementing states and transitions in if-else 
+//statements
 
 //for input parsing: each symbol should be categorized:
 //number, operation, or equals
@@ -19,7 +13,7 @@ for (digit of digits) {
     symbolMap[digit] = 'digit';
 }
 const operators = ['+', '-', '*', '/'];
-for (operator of operators) {
+for (let operator of operators) {
     symbolMap[operator] = 'operator';
 }
 symbolMap['='] = 'equals';
@@ -27,7 +21,7 @@ symbolMap['='] = 'equals';
 let number1 = '';//appending digits acts like contcatenation,
 //not addition.
 let number2 = '';
-let operatorInput = '';
+let operator = '';
 
 
 let states = ['start', 'number', 'number-operation',
@@ -36,19 +30,64 @@ let states = ['start', 'number', 'number-operation',
 let state = 'start';
 function processInput(pointerEvent) {
     const input = pointerEvent.currentTarget.textContent;
-    if (state == 'start' || state == 'number') {
+    if (state == 'start') {
         if (isDigit(input)) { //
             //append to a number
-            number1 = number1 + input.toString(); //appending digits works like
-            //                          //contacetantion, not addition
+            number1 = number1 + input.toString(); //appending 
+            //digits works like contacetantion, not addition
+            state = 'number';
+        }
+    }
+    else if (state == 'number') {
+        if (isDigit(input)) { //
+            number1 = number1 + input.toString();
             state = 'number';
         }
         else if (isOperator(input)) {
+            operator = input;
             state = 'number-operation';
-            operatorInput = input;
+        }
+        else {
+            number1 = '';
+            state = 'start';
+        }
+    }
+    else if (state == 'number-operation') {
+        if (isDigit(input)) { //
+            number2 = number2 + input.toString();
+            state = 'number-operation-number';
+        }
+        else {
+            number1 = '';
+            number2 = '';
+            operator = '';
+            state = 'start';
+        }
+    }
+    else if (state == 'number-operation-number') {
+        if (isDigit(input)) { //
+            number2 = number2 + input.toString();
+            state = 'number-operation-number';
+        }
+        else if (input == '=') {
+            //compute and display
+            let result = operate(operator, number1, number2);
+            console.log(result);
+            resetCalculator()
+        }
+        else {
+            resetCalculator()
         }
     }
 }
+function resetCalculator() {
+    number1 = '';
+    number2 = '';
+    operator = '';
+    state = 'start';
+}
+
+
 
 function isOperator(input) { //attach this to a button
     return (symbolMap[input] == 'operator');
@@ -81,7 +120,7 @@ function populateDisplay(pointerEvent) {
 
 
 function add(addend, addend2) {
-    return (addend + addend2);
+    return (parseInt(addend) + parseInt(addend2));
 }
 
 const subtract = function (minued, subtrahend) {
