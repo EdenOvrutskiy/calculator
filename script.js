@@ -2,12 +2,24 @@ const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 
 //TODO: 
-//reduce code duplication 
-//no floating-point numbers?
 //enable a chain of computation
+
+//potentially get rid of "number2"? 
+//  this might be required to make the display show a running
+//  total of calculations instead of being limited to 2 numbers
+
+//reduce code duplication 
+
+//no floating-point numbers?
+
+//some code that describes the 'clear' button's purpose and
+//behavior, instead of just letting it work as a side effect
+//of not being accounted for?
+
 //something other than 'start' -> like some error message..
 //move from "states"/ "state machine" to some code
 //that better describes itself?
+
 
 
 //////////////
@@ -90,6 +102,9 @@ function processInput(pointerEvent) {
             let result = operate(operator, firstNumber, secondNumber);
             resetCalculator();
             display.textContent = result;
+            //turn result of calculation into input for next one:
+            firstNumber = result.toString();
+            state = 'number';
         }
         else {
             resetCalculator();
