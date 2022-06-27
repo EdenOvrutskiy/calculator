@@ -4,35 +4,37 @@ const buttons = document.querySelectorAll('button');
 //TODO: 
 
 //stylize
-//can I remove the row div elements?
+//confine display to it's container 
+
+//division by 0 error escapes the boundaries
 
 //flexible display might not be bad :
 //  https://michalosman.github.io/calculator/
 //  limit size of result somehow?
 //  limit calculator display size?
 
-//make buttons bigger 
-//align buttons
+//can I remove the .row div elements and use something like
+//"flex-wrap" ?
 
-// make calculator maintain it's shape
-// instead of stretching around
-// looking for a vertical rectangle here
 
-//do I hard-code a pixel size?
 
+//animated buttons on-hover
+//clicked buttons do a movement
+
+//gentle sound on-click
+//  accidental clicks on '=' give a different sound
 
 //javascript
 //use typeOf in isDigit() ?
+
+//chain computations without having to press '=' over
+//and over..
 
 //could organize the program based on the input type,
 //instead of the various states.
 //  this could help with negating '=' effects
 
-//pressing a number and then '=' should just let the 
-//number be? ... 
-
-//it could re-do the last action, like some calculators
-//do..
+//re-do the last action, when pressing '='?
 
 //some extra info at the top of the number - about
 //what's being computed..
@@ -61,6 +63,8 @@ const buttons = document.querySelectorAll('button');
 //and then a function could be run to check the state
 //depending of the object's contents
 
+//interface that tells you your calculation history
+
 
 //////////////
 
@@ -79,7 +83,7 @@ let state = 'start';
 function processInput(pointerEvent) {
     const input = pointerEvent.currentTarget.textContent;
     if (state != 'number-operation-number' && input == '=') {
-        ;//do nothing when the user accidentally pressed '='.
+        ;//do nothing when the user accidentally presses '='.
     }
     else if (state == 'start') {
         if (isDigit(input)) { //
