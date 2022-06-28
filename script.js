@@ -25,6 +25,8 @@ const buttons = document.querySelectorAll('button');
 //  accidental clicks on '=' give a different sound
 
 //javascript
+//BUG: can operate on the ERROR - cannot divide by 0 part.
+
 //use typeOf in isDigit() ?
 
 //chain computations without having to press '=' over
@@ -101,7 +103,7 @@ function processInput(pointerEvent) {
         if (isDigit(input)) { //
             firstNumber = firstNumber + input.toString();
             state = 'number';
-            display.textContent = firstNumber;
+            display.textContent = parseInt(firstNumber);
         }
         else if (isOperator(input)) {
             operator = input;
