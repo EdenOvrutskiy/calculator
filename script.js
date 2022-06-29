@@ -227,4 +227,10 @@ function operate(operator, number, secondNumber) {
 }
 
 computeSound = new Audio("button-22.mp3");
+computeSound.volume = 0.15;
 pressSound = new Audio("button-16.mp3");
+pressSound.volume = 0.15;
+
+pressSound.preload = "auto"; //not sure if works, prevents rare bug
+                             //where first key press isn't heard
+computeSound.preload = "auto"; 
