@@ -17,25 +17,17 @@ body {
     align-items: center;
     height: 100vh;
     width: 100vw;
-    background-color: grey;
+    background-color: #FCB31B;
 }
-
-/*
-.bigger-container {
-    display:flex;
-    min-height: 450px;
-}
-*/
 
 .container {
     display: flex;
     flex-direction: column;
     border: 20px solid black;
     border-radius: 28px;
-    width: 400px;
+    width: 300px;
     min-height: 500px;
     background-color: black;
-    /*box-sizing: border-box;*/
 }
 
 #display {
@@ -50,11 +42,11 @@ body {
     border-bottom: 20px solid black;
     border-radius: 45px;
     box-sizing: border-box;
-    font-size: 60px;
-    line-height: 60px;
+    font-size: 40px;
+    line-height: 40px;
     word-wrap: break-word;
     word-break: break-all;
-    /* trying to get a 50-50 #display/.buttons ratio
+    /* 
     */
 }
 
