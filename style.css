@@ -1,3 +1,7 @@
+/*button sounds are taken from:
+https://www.soundjay.com/button-sounds-1.html
+*/
+
 @font-face {
     font-family: 'digital-clock-font';
     src: url('fonts/digital-7.ttf');
@@ -16,8 +20,9 @@ body {
 }
 
 .bigger-container {
-    padding: 10px;
+    border-radius: 28px;
     background-color: rgb(0, 0, 0);
+    border: 20px solid black;
 }
 
 .container {
@@ -42,7 +47,8 @@ body {
     line-height: 60px;
     /*prevents line-break 
     from overlapping*/
-    border-bottom: 10px solid black;
+    border-bottom: 20px solid black;
+    border-radius: 48px;
 }
 
 .buttons {

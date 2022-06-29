@@ -146,6 +146,15 @@ function processInput(pointerEvent) {
         }
     }
 
+if (input != '=') {
+    pressSound.currentTime = 0;
+    pressSound.play();
+}
+else {
+    computeSound.currentTime = 0;
+    computeSound.play();
+}
+
 }
 function resetCalculator() {
     firstNumber = '';
@@ -216,3 +225,6 @@ function operate(operator, number, secondNumber) {
         return "ERROR - bad operator for operate function";
     }
 }
+
+computeSound = new Audio("button-22.mp3");
+pressSound = new Audio("button-16.mp3");
