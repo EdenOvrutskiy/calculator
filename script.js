@@ -81,8 +81,21 @@ let operator = '';
 const states = ['start', 'number', 'number-operation',
     'number-operation-number'];
 
+function toggleWordOrNumberDisplay(mode) {
+    if (mode == 'number') {
+        display.style.wordWrap = 'break-word';
+        display.style.wordBreak = 'break-all';
+    }
+    else if (mode == 'word') {
+        display.style.wordWrap = 'normal';
+        display.style.wordBreak = 'normal';
+    }
+}
+toggleWordOrNumberDisplay('word');
+
 let state = 'start';
 function processInput(pointerEvent) {
+    toggleWordOrNumberDisplay('number');
     const input = pointerEvent.currentTarget.textContent;
     if (state != 'number-operation-number' && input == '=') {
         ;//do nothing when the user accidentally presses '='.
@@ -136,6 +149,9 @@ function processInput(pointerEvent) {
             //compute and display
             let result = operate(operator, firstNumber, secondNumber);
             resetCalculator();
+            if ("result == ERROR - cannot divide by 0") {
+                toggleWordOrNumberDisplay('word');
+            }
             display.textContent = result;
             //turn result of calculation into input for next one:
             firstNumber = result.toString();
