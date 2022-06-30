@@ -63,13 +63,6 @@ function processInput(pointerEvent) { //after a key is pressed..
             firstNumber = firstNumber + input.toString();
             display.textContent = parseFloat(firstNumber) + '.';
             firstDotUsed = true;
-            /*if (firstDotUsed) {
-            display.textContent = firstNumber.toString();
-            console.log(firstNumber);
-            }
-            else {
-            }
-            */
         }
         else if (isOperator(input)) {
             operator = input;
