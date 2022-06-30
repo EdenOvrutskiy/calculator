@@ -118,7 +118,6 @@ function resetCalculator() {
     operator = '';
     state = 'start';
     dotUsed = false;
-    toggleDisplayMode('word');
     display.textContent = 'ready';
 }
 
