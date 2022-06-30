@@ -1,5 +1,3 @@
-
-
 @font-face {
     font-family: 'digital-clock-font';
     src: url('fonts/digital-7.ttf');
@@ -33,6 +31,7 @@ body {
     display: flex;
     justify-content: right;
     align-items: center;
+    text-align: center;
     flex-grow: 1;
     color: black;
     background-color: hsl(155, 100%, 77%);
@@ -100,16 +99,18 @@ button {
     */
 }
 
+.clear-button {
+    background-color: #EB9000;
+}
+
 button:hover {
     background-color: rgb(161, 161, 161);
 }
 
-button:active {
-    box-shadow: none;
-    transform: translateY(4px);
+.clear-button:hover {
+    background-color: #cf8001;
 }
 
-
-#clear-button {
-    background-color: #EB9000;
+button:active {
+    transform: translateY(4px);
 }

@@ -8,21 +8,11 @@ let secondNumber = '';
 let operator = '';
 
 //the calculator's state determines what it currently 
-//'remembers',and how it will respond to incoming input.
+//'remembers',and in turn how it will respond to incoming input.
 //see calc_state_machine.png for a visual representation
 const states = ['start', 'number', 'number-operation',
     'number-operation-number'];
 
-function toggleWordOrNumberDisplay(mode) {
-    if (mode == 'number') {
-        display.style.wordWrap = 'break-word';
-        display.style.wordBreak = 'break-all';
-    }
-    else if (mode == 'word') {
-        display.style.wordWrap = 'normal';
-        display.style.wordBreak = 'normal';
-    }
-}
 toggleWordOrNumberDisplay('word');
 
 let state = 'start';
@@ -104,6 +94,7 @@ function processInput(pointerEvent) {
     }
 
 }
+
 function resetCalculator() {
     firstNumber = '';
     secondNumber = '';
@@ -113,6 +104,16 @@ function resetCalculator() {
 }
 
 
+function toggleWordOrNumberDisplay(mode) {
+    if (mode == 'number') {
+        display.style.wordWrap = 'break-word';
+        display.style.wordBreak = 'break-all';
+    }
+    else if (mode == 'word') {
+        display.style.wordWrap = 'normal';
+        display.style.wordBreak = 'normal';
+    }
+}
 
 function isOperator(input) { //attach this to a button
     const operators = ['+', '-', '*', '/'];
