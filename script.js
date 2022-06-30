@@ -12,7 +12,9 @@ let operator = '';
 //see calc_state_machine.png for a visual representation
 const states = ['start', 'number', 'number-operation',
     'number-operation-number'];
-let dotUsed = false; //(a flag to prevent double tapping '.')
+
+let firstDotUsed = false; //(a flag to prevent double tapping '.')
+let secondDotUsed = false; //(a flag to prevent double tapping '.')
 
 //make welcome message presentable
 toggleDisplayMode('word');
@@ -49,14 +51,25 @@ function processInput(pointerEvent) { //after a key is pressed..
     else if (state == 'number') {
         if (isDigit(input)) {
             firstNumber = firstNumber + input.toString();
-            state = 'number';
-            display.textContent = parseFloat(firstNumber);
+            if (firstDotUsed == false) {
+                display.textContent = parseFloat(firstNumber);
+            }
+            else { //fix 0.00.. not showing -> NOTE: user won't see
+                //javascript limitations with very small numbers
+                display.textContent = firstNumber.toString();
+            }
         }
-        else if (input == '.' && dotUsed == false) {
+        else if (input == '.' && firstDotUsed == false) {
             firstNumber = firstNumber + input.toString();
-            state = 'number';
             display.textContent = parseFloat(firstNumber) + '.';
-            dotUsed = true;
+            firstDotUsed = true;
+            /*if (firstDotUsed) {
+            display.textContent = firstNumber.toString();
+            console.log(firstNumber);
+            }
+            else {
+            }
+            */
         }
         else if (isOperator(input)) {
             operator = input;
@@ -81,8 +94,20 @@ function processInput(pointerEvent) { //after a key is pressed..
     else if (state == 'number-operation-number') {
         if (isDigit(input)) { //
             secondNumber = secondNumber + input.toString();
+            if (secondDotUsed == false) {
+                display.textContent = parseFloat(firstNumber) + operator
+                    + parseFloat(secondNumber);
+            }
+            else {
+                display.textContent = parseFloat(firstNumber) + operator
+                    + secondNumber.toString();
+            }
+        }
+        else if (input == '.' && secondDotUsed == false) {
+            secondNumber = secondNumber + input.toString();
             display.textContent = parseFloat(firstNumber) + operator
-                + parseFloat(secondNumber);
+                + parseFloat(secondNumber) + '.';
+            secondDotUsed = true;
         }
         else if (input == '=') {
             //compute and display
@@ -95,6 +120,7 @@ function processInput(pointerEvent) { //after a key is pressed..
             //turn result of calculation into input for next one:
             firstNumber = result.toString();
             state = 'number';
+            resetDotFlags();
         }
         else {
             resetCalculator();
@@ -111,13 +137,17 @@ function processInput(pointerEvent) { //after a key is pressed..
         computeSound.play();
     }
 }
+function resetDotFlags() {
+    firstDotUsed = false;
+    secondDotUsed = false;
+}
 
 function resetCalculator() {
     firstNumber = '';
     secondNumber = '';
     operator = '';
     state = 'start';
-    dotUsed = false;
+    resetDotFlags();
     display.textContent = 'ready';
 }
 
