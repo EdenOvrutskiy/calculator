@@ -31,7 +31,7 @@ body {
     display: flex;
     justify-content: right;
     align-items: center;
-    text-align: center;
+    text-align: center; /*why doesn't this apply to 'ready' ? */
     flex-grow: 1;
     color: black;
     background-color: hsl(155, 100%, 77%);
@@ -43,8 +43,6 @@ body {
     line-height: 60px;
     word-break: break-all;
     word-wrap: break-word;
-    /* 
-    */
 }
 
 .buttons {
@@ -52,11 +50,7 @@ body {
     flex-direction: column;
     flex-grow: 1;
     box-sizing: border-box;
-    /*1.6 makes bug more apparent)*/
-    /*flex-basis: 300px;*/
     min-height: 300px;
-    /*flex-shrink: 0;*/
-    /*min-height:  maybe? - band-aid solution*/
 }
 
 .row {
@@ -72,17 +66,11 @@ body {
     border-top-right-radius: 18px;
 }
 
-/* disabling button stuff to get 50-50 sizing
-    */
-
 .lastRow {
     border-bottom: 5px solid rgb(245, 245, 245);
     border-bottom-left-radius: 18px;
     border-bottom-right-radius: 18px;
-    /* disabling button stuff to get 50-50 sizing
-    */
 }
-
 
 button {
     margin: 0;
@@ -94,9 +82,6 @@ button {
     font-size: 30px;
     border: 5px solid rgb(245, 245, 245);
     box-shadow: inset 0px -3px black;
-    /* disabling button stuff to get 50-50 sizing
-    box-sizing: border-box;
-    */
 }
 
 .clear-button {

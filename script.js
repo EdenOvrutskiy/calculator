@@ -1,7 +1,6 @@
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 
-
 let firstNumber = '';//a string: appending digits acts like 
 //contcatenation, not addition.
 let secondNumber = '';
@@ -9,33 +8,45 @@ let operator = '';
 
 //the calculator's state determines what it currently 
 //'remembers',and in turn how it will respond to incoming input.
+//each button click sets the state for the next click to use
 //see calc_state_machine.png for a visual representation
 const states = ['start', 'number', 'number-operation',
     'number-operation-number'];
 
-toggleWordOrNumberDisplay('word');
+//make welcome message presentable
+toggleDisplayMode('word');
 
 let state = 'start';
-function processInput(pointerEvent) {
-    toggleWordOrNumberDisplay('number');
+function processInput(pointerEvent) { //after a key is pressed..
+    //display numbers correctly (user input, results of calculations)
+    toggleDisplayMode('number');
+    //a button press is considered the user's input
+    //find out what it is by grabbing the text content of the element
+    //from addEventListener
     const input = pointerEvent.currentTarget.textContent;
-    if (state != 'number-operation-number' && input == '=') {
-        ;//do nothing when the user accidentally presses '='.
+
+    //###handle inputs depending on the state:
+    if (input == 'c') { //regardless of state
+        resetCalculator();
     }
+    //do nothing when the user presses '=' at a wrong time:
+    if (input == '=' && state != 'number-operation-number') {
+        ;
+    }
+    //from the start state: accept numbers
     else if (state == 'start') {
-        if (isDigit(input)) { //
-            //append to a number
+        if (isDigit(input)) {
             firstNumber = firstNumber + input.toString(); //appending 
             //digits works like contacetantion, not addition
             state = 'number';
-            display.textContent = firstNumber;
+            display.textContent = parseFloat(firstNumber);
         }
         else {
             resetCalculator();
         }
     }
     else if (state == 'number') {
-        if (isDigit(input)) { //
+        if (isDigit(input)) {
             firstNumber = firstNumber + input.toString();
             state = 'number';
             display.textContent = parseFloat(firstNumber);
@@ -45,7 +56,7 @@ function processInput(pointerEvent) {
             state = 'number-operation';
             display.textContent = parseFloat(firstNumber) + operator;
         }
-        else {
+        else { 
             resetCalculator();
         }
     }
@@ -63,7 +74,6 @@ function processInput(pointerEvent) {
     else if (state == 'number-operation-number') {
         if (isDigit(input)) { //
             secondNumber = secondNumber + input.toString();
-            state = 'number-operation-number';
             display.textContent = parseFloat(firstNumber) + operator
                 + parseFloat(secondNumber);
         }
@@ -72,18 +82,19 @@ function processInput(pointerEvent) {
             let result = operate(operator, firstNumber, secondNumber);
             resetCalculator();
             if (result == "ERROR - cannot divide by 0") {
-                toggleWordOrNumberDisplay('word');
+                toggleDisplayMode('word');
             }
             display.textContent = result;
             //turn result of calculation into input for next one:
             firstNumber = result.toString();
-            state = 'number';
+            state = 'number'; 
         }
         else {
             resetCalculator();
         }
     }
 
+    //play a sound depending on the button pressed
     if (input != '=' && input != 'C') {
         pressSound.currentTime = 0;
         pressSound.play();
@@ -92,7 +103,6 @@ function processInput(pointerEvent) {
         computeSound.currentTime = 0;
         computeSound.play();
     }
-
 }
 
 function resetCalculator() {
@@ -100,18 +110,22 @@ function resetCalculator() {
     secondNumber = '';
     operator = '';
     state = 'start';
-    display.textContent = 'start';
+    display.textContent = 'ready';
 }
 
-
-function toggleWordOrNumberDisplay(mode) {
+function toggleDisplayMode(mode) {//display numbers and text properly
     if (mode == 'number') {
+        //causes long numbers to take up multiple lines
         display.style.wordWrap = 'break-word';
         display.style.wordBreak = 'break-all';
     }
     else if (mode == 'word') {
+        //prevent words from breaking at:welcome message, div 0 error..)
         display.style.wordWrap = 'normal';
         display.style.wordBreak = 'normal';
+    }
+    else {
+        console.log("Error toggling display mode");
     }
 }
 
