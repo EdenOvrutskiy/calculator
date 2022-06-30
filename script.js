@@ -1,74 +1,6 @@
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 
-//TODO: 
-
-//stylize
-//confine display to it's container 
-
-//division by 0 error escapes the boundaries
-
-//flexible display might not be bad :
-//  https://michalosman.github.io/calculator/
-//  limit size of result somehow?
-//  limit calculator display size?
-
-//can I remove the .row div elements and use something like
-//"flex-wrap" ?
-
-
-
-//animated buttons on-hover
-//clicked buttons do a movement
-
-//gentle sound on-click
-//  accidental clicks on '=' give a different sound
-
-//javascript
-//BUG: can operate on the ERROR - cannot divide by 0 part.
-
-//use typeOf in isDigit() ?
-
-//chain computations without having to press '=' over
-//and over..
-
-//could organize the program based on the input type,
-//instead of the various states.
-//  this could help with negating '=' effects
-
-//re-do the last action, when pressing '='?
-
-//some extra info at the top of the number - about
-//what's being computed..
-
-//pressing an operation instead of '=' should 
-//initial chain computation
-
-//potentially get rid of "number2" variable?
-
-//reduce code duplication 
-
-//no floating-point numbers?
-
-//some code that describes the 'clear' button's purpose and
-//behavior, instead of just letting it work as a side effect
-//of not being accounted for?
-
-//something other than 'start' -> like some error message..
-//move from "states"/ "state machine" to some code
-//that better describes itself?
-
-//could make the program more self-describing by
-//creating an object {} with the keys [firstNumber] : ..
-//[oprator] : null / '+'
-//and that would show what each state really means
-//and then a function could be run to check the state
-//depending of the object's contents
-
-//interface that tells you your calculation history
-
-
-//////////////
 
 let firstNumber = '';//a string: appending digits acts like 
 //contcatenation, not addition.
@@ -116,12 +48,12 @@ function processInput(pointerEvent) {
         if (isDigit(input)) { //
             firstNumber = firstNumber + input.toString();
             state = 'number';
-            display.textContent = parseInt(firstNumber);
+            display.textContent = parseFloat(firstNumber);
         }
         else if (isOperator(input)) {
             operator = input;
             state = 'number-operation';
-            display.textContent = parseInt(firstNumber) + operator;
+            display.textContent = parseFloat(firstNumber) + operator;
         }
         else {
             resetCalculator();
@@ -131,8 +63,8 @@ function processInput(pointerEvent) {
         if (isDigit(input)) { //
             secondNumber = secondNumber + input.toString();
             state = 'number-operation-number';
-            display.textContent = parseInt(firstNumber) + operator
-                + parseInt(secondNumber);
+            display.textContent = parseFloat(firstNumber) + operator
+                + parseFloat(secondNumber);
         }
         else {
             resetCalculator();
@@ -142,8 +74,8 @@ function processInput(pointerEvent) {
         if (isDigit(input)) { //
             secondNumber = secondNumber + input.toString();
             state = 'number-operation-number';
-            display.textContent = parseInt(firstNumber) + operator
-                + parseInt(secondNumber);
+            display.textContent = parseFloat(firstNumber) + operator
+                + parseFloat(secondNumber);
         }
         else if (input == '=') {
             //compute and display
@@ -204,11 +136,11 @@ function updateLog(pointerEvent) {
 }
 
 function add(addend, addend2) {
-    return (parseInt(addend) + parseInt(addend2));
+    return (parseFloat(addend) + parseFloat(addend2));
 }
 
 const subtract = function (minued, subtrahend) {
-    return (minued - subtrahend);
+    return (parseFloat(minued) - parseFloat(subtrahend));
 };
 
 const multiply = function (factor, factor2) {
