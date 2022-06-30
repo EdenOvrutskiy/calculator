@@ -31,7 +31,8 @@ body {
     display: flex;
     justify-content: right;
     align-items: center;
-    text-align: center; /*why doesn't this apply to 'ready' ? */
+    text-align: center; /*why doesn't this apply to single-word
+    displays?*/
     flex-grow: 1;
     color: black;
     background-color: hsl(155, 100%, 77%);

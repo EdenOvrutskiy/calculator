@@ -12,6 +12,7 @@ let operator = '';
 //see calc_state_machine.png for a visual representation
 const states = ['start', 'number', 'number-operation',
     'number-operation-number'];
+let dotUsed = false; //(a flag to prevent double tapping '.')
 
 //make welcome message presentable
 toggleDisplayMode('word');
@@ -51,12 +52,18 @@ function processInput(pointerEvent) { //after a key is pressed..
             state = 'number';
             display.textContent = parseFloat(firstNumber);
         }
+        else if (input == '.' && dotUsed == false) {
+            firstNumber = firstNumber + input.toString();
+            state = 'number';
+            display.textContent = parseFloat(firstNumber) + '.';
+            dotUsed = true;
+        }
         else if (isOperator(input)) {
             operator = input;
             state = 'number-operation';
             display.textContent = parseFloat(firstNumber) + operator;
         }
-        else { 
+        else {
             resetCalculator();
         }
     }
@@ -87,7 +94,7 @@ function processInput(pointerEvent) { //after a key is pressed..
             display.textContent = result;
             //turn result of calculation into input for next one:
             firstNumber = result.toString();
-            state = 'number'; 
+            state = 'number';
         }
         else {
             resetCalculator();
@@ -110,6 +117,8 @@ function resetCalculator() {
     secondNumber = '';
     operator = '';
     state = 'start';
+    dotUsed = false;
+    toggleDisplayMode('word');
     display.textContent = 'ready';
 }
 
