@@ -121,7 +121,7 @@ function processInput(pointerEvent) {
         else if (isOperator(input)) {
             operator = input;
             state = 'number-operation';
-            display.textContent = firstNumber + operator;
+            display.textContent = parseInt(firstNumber) + operator;
         }
         else {
             resetCalculator();
@@ -131,8 +131,8 @@ function processInput(pointerEvent) {
         if (isDigit(input)) { //
             secondNumber = secondNumber + input.toString();
             state = 'number-operation-number';
-            display.textContent = firstNumber + operator
-                + secondNumber;
+            display.textContent = parseInt(firstNumber) + operator
+                + parseInt(secondNumber);
         }
         else {
             resetCalculator();
@@ -142,14 +142,14 @@ function processInput(pointerEvent) {
         if (isDigit(input)) { //
             secondNumber = secondNumber + input.toString();
             state = 'number-operation-number';
-            display.textContent = firstNumber + operator
-                + secondNumber;
+            display.textContent = parseInt(firstNumber) + operator
+                + parseInt(secondNumber);
         }
         else if (input == '=') {
             //compute and display
             let result = operate(operator, firstNumber, secondNumber);
             resetCalculator();
-            if ("result == ERROR - cannot divide by 0") {
+            if (result == "ERROR - cannot divide by 0") {
                 toggleWordOrNumberDisplay('word');
             }
             display.textContent = result;
