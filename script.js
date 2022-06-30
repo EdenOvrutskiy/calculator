@@ -105,15 +105,20 @@ function processInput(pointerEvent) { //after a key is pressed..
         else if (input == '=') {
             //compute and display
             let result = operate(operator, firstNumber, secondNumber);
-            resetCalculator();
             if (result == "ERROR - cannot divide by 0") {
                 toggleDisplayMode('word');
             }
+            resetCalculator();
             display.textContent = result;
             //turn result of calculation into input for next one:
             firstNumber = result.toString();
             state = 'number';
             resetDotFlags();
+            //prevent a dot that's carried over from the previous
+            //calculation from being ignored:
+            if (firstNumber.includes('.')) {
+                firstDotUsed = true;
+            }
         }
         else {
             resetCalculator();
