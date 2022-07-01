@@ -104,6 +104,10 @@ button:hover {
     background-color: #727272;
 }
 
+.backspace {
+    width: 60%;
+}
+
 button:active {
     transform: translateY(4px);
 }
