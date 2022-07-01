@@ -89,12 +89,19 @@ button {
     background-color: #EB9000;
 }
 
+.op-button {
+    background-color: #999998;
+}
+
 button:hover {
     background-color: rgb(161, 161, 161);
 }
 
 .clear-button:hover {
     background-color: #cf8001;
+}
+.op-button:hover {
+    background-color: #727272;
 }
 
 button:active {
