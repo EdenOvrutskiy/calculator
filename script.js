@@ -34,12 +34,18 @@ function processInput(pointerEvent) { //after a key is pressed..
     //find out what it is by grabbing the text content of the element
     //from addEventListener
     const input = pointerEvent.currentTarget.textContent;
-    //before we have first number + operator
     if (state == 'number1') {
         if (isDigit(input)) {
             firstNumber = firstNumber + input.toString(); //appending 
             //digits works like contacetantion, not addition
             display.textContent = parseFloat(firstNumber);
+        }
+        else if (input == '.') {
+            if (firstNumber.length >= 1 && firstDotUsed == false) {
+                firstNumber = firstNumber + input.toString();
+                display.textContent = parseFloat(firstNumber) + '.';
+                firstDotUsed = true;
+            }
         }
         else if (input == '=') {
             ;//do nothing
@@ -49,18 +55,25 @@ function processInput(pointerEvent) { //after a key is pressed..
             state = 'number2';
             display.textContent = parseFloat(firstNumber) + operator;
         }
-        else if (input == '.') {
-            if (firstNumber.length >= 1 && firstDotUsed == false) {
-                firstNumber = firstNumber + input.toString();
-                display.textContent = parseFloat(firstNumber) + '.';
-                firstDotUsed = true;
-            }
+        else if (input == 'C') {//if C was pressed
+            firstNumber = 0;
+            secondNumber = '';
+            operator = '';
+            firstDotUsed = false;
+            secondDotUsed = false;
+            display.textContent = parseFloat(firstNumber);
         }
         else {
-            firstNumber = '0';
-            firstDotUsed = false;
+            console.log("some kind of error " +
+                "has occured on number1 state's function");
+            console.log("resetting anyway");
+            firstNumber = 0;
+            secondNumber = '';
             operator = '';
+            firstDotUsed = false;
+            secondDotUsed = false;
             display.textContent = parseFloat(firstNumber);
+            return -1;
         }
     }
     else if (state == 'number2') {
@@ -71,30 +84,36 @@ function processInput(pointerEvent) { //after a key is pressed..
             display.textContent = parseFloat(firstNumber) + operator
                 + parseFloat(secondNumber);
         }
-        else if (input == '=' && secondNumber.length >= 1) {
-            //compute and display
-            let result = operate(operator, firstNumber, secondNumber);
-            if (result == "ERROR - cannot divide by 0") {
-                toggleDisplayMode('word');
-            }
-            resetCalculator();
-            display.textContent = result;
-            //turn result of calculation into input for next one:
-            firstNumber = result.toString();
-            state = 'number1';
-            resetDotFlags();
-            //prevent a dot that's carried over from the previous
-            //calculation from being ignored:
-            if (firstNumber.includes('.')) {
-                firstDotUsed = true;
-            }
-            secondDotUsed = false;
-        }
         else if (input == '.') {
             if (secondNumber.length >= 1 && secondDotUsed == false) {
                 secondNumber = secondNumber + '.';
                 display.textContent = firstNumber + operator + secondNumber;
                 secondDotUsed = true;
+            }
+        }
+        else if (input == '=' && secondNumber.length >= 1) {
+            //compute and display
+            let result = operate(operator, firstNumber, secondNumber);
+            if (result == "ERROR - cannot divide by 0") {
+                toggleDisplayMode('word');
+                resetCalculator();
+                display.textContent = result;
+            }
+            else {
+                display.textContent = result;
+                //turn result of calculation into input for next one:
+                firstNumber = result.toString();
+                secondNumber = '';
+                state = 'number1';
+                //prevent a dot that's carried over from the previous
+                //calculation from being ignored:
+                if (firstNumber.includes('.')) {
+                    firstDotUsed = true;
+                }
+                else {
+                    firstDotUsed = false;
+                }
+                secondDotUsed = false;
             }
         }
         else { //if faulty input, reset everything
@@ -122,12 +141,12 @@ function resetDotFlags() {
 }
 
 function resetCalculator() {
-    firstNumber = '';
+    state = 'number1';
+    firstNumber = 0;
     secondNumber = '';
     operator = '';
-    state = 'start';
     resetDotFlags();
-    display.textContent = 'ready';
+    display.textContent = firstNumber;
 }
 
 function toggleDisplayMode(mode) {//display numbers and text properly
