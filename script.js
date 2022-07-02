@@ -1,3 +1,5 @@
+//JUST CHECKING IF BRANCHING WORKS
+
 const display = document.querySelector('#display');
 const buttons = document.querySelectorAll('button');
 
@@ -33,7 +35,7 @@ function processInput(pointerEvent) { //after a key is pressed..
         resetCalculator();
     }
     //do nothing when the user presses '=' at a wrong time:
-    if (input == '=' && state != 'number-operation-number') {
+    else if (input == '=' && state != 'number-operation-number') {
         ;
     }
     //from the start state: accept numbers
