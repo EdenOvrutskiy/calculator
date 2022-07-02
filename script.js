@@ -11,9 +11,8 @@ let operator = '';
 //the calculator's state determines what it currently 
 //'remembers',and in turn how it will respond to incoming input.
 //each button click sets the state for the next click to use
-//see calc_state_machine.png for a visual representation
-const states = ['start', 'number', 'number-operation',
-    'number-operation-number'];
+//see new_state_machine.png for a visual representation
+const states = ['number1', 'number2'];
 
 let firstDotUsed = false; //(a flag to prevent double tapping '.')
 let secondDotUsed = false; //(a flag to prevent double tapping '.')
@@ -21,7 +20,12 @@ let secondDotUsed = false; //(a flag to prevent double tapping '.')
 //make welcome message presentable
 toggleDisplayMode('word');
 
-let state = 'start';
+let state = 'number1';
+
+for (button of buttons) {
+    button.addEventListener('click', processInput);
+}
+
 function processInput(pointerEvent) { //after a key is pressed..
     //display numbers correctly (user input, results of calculations)
     toggleDisplayMode('number');
@@ -30,102 +34,128 @@ function processInput(pointerEvent) { //after a key is pressed..
     //from addEventListener
     const input = pointerEvent.currentTarget.textContent;
 
-    //###handle inputs depending on the state:
-    if (input == 'c') { //regardless of state
-        resetCalculator();
-    }
-    //do nothing when the user presses '=' at a wrong time:
-    else if (input == '=' && state != 'number-operation-number') {
-        ;
-    }
-    //from the start state: accept numbers
-    else if (state == 'start') {
+    if (state == 'number1') {
         if (isDigit(input)) {
             firstNumber = firstNumber + input.toString(); //appending 
             //digits works like contacetantion, not addition
-            state = 'number';
             display.textContent = parseFloat(firstNumber);
         }
-        else {
-            resetCalculator();
+        else if (input == '=') {
+            ;//do nothing
         }
-    }
-    else if (state == 'number') {
-        if (isDigit(input)) {
-            firstNumber = firstNumber + input.toString();
-            if (firstDotUsed == false) {
-                display.textContent = parseFloat(firstNumber);
-            }
-            else { //fix 0.00.. not showing -> NOTE: user won't see
-                //javascript limitations with very small numbers
-                display.textContent = firstNumber.toString();
-            }
-        }
-        else if (input == '.' && firstDotUsed == false) {
-            firstNumber = firstNumber + input.toString();
-            display.textContent = parseFloat(firstNumber) + '.';
-            firstDotUsed = true;
-        }
-        else if (isOperator(input)) {
+        else if (isOperator(input) && firstNumber.length >= 1) {
             operator = input;
-            state = 'number-operation';
+            state = 'number2';
             display.textContent = parseFloat(firstNumber) + operator;
         }
-        else {
-            resetCalculator();
-        }
-    }
-    else if (state == 'number-operation') {
-        if (isDigit(input)) { //
-            secondNumber = secondNumber + input.toString();
-            state = 'number-operation-number';
-            display.textContent = parseFloat(firstNumber) + operator
-                + parseFloat(secondNumber);
-        }
-        else {
-            resetCalculator();
-        }
-    }
-    else if (state == 'number-operation-number') {
-        if (isDigit(input)) { //
-            secondNumber = secondNumber + input.toString();
-            if (secondDotUsed == false) {
-                display.textContent = parseFloat(firstNumber) + operator
-                    + parseFloat(secondNumber);
-            }
-            else {
-                display.textContent = parseFloat(firstNumber) + operator
-                    + secondNumber.toString();
-            }
-        }
-        else if (input == '.' && secondDotUsed == false) {
-            secondNumber = secondNumber + input.toString();
-            display.textContent = parseFloat(firstNumber) + operator
-                + parseFloat(secondNumber) + '.';
-            secondDotUsed = true;
-        }
-        else if (input == '=') {
-            //compute and display
-            let result = operate(operator, firstNumber, secondNumber);
-            if (result == "ERROR - cannot divide by 0") {
-                toggleDisplayMode('word');
-            }
-            resetCalculator();
-            display.textContent = result;
-            //turn result of calculation into input for next one:
-            firstNumber = result.toString();
-            state = 'number';
-            resetDotFlags();
-            //prevent a dot that's carried over from the previous
-            //calculation from being ignored:
-            if (firstNumber.includes('.')) {
+        else if (input == '.') {
+            if (firstNumber.length >= 1 && firstDotUsed == false) {
+                firstNumber = firstNumber + input.toString();
+                display.textContent = parseFloat(firstNumber) + '.';
                 firstDotUsed = true;
             }
         }
         else {
-            resetCalculator();
+            firstNumber = '0';
+            firstDotUsed = false;
+            display.textContent = parseFloat(firstNumber);
         }
     }
+    /*
+        //###handle inputs depending on the state:
+        if (input == 'c') { //regardless of state
+            resetCalculator();
+        }
+        //do nothing when the user presses '=' at a wrong time:
+        else if (input == '=' && state != 'number-operation-number') {
+            ;
+        }
+        //from the start state: accept numbers
+        else if (state == 'start') {
+            if (isDigit(input)) {
+                state = 'number';
+            }
+            else {
+                resetCalculator();
+            }
+        }
+        else if (state == 'number') {
+            if (isDigit(input)) {
+                firstNumber = firstNumber + input.toString();
+                if (firstDotUsed == false) {
+                    display.textContent = parseFloat(firstNumber);
+                }
+                else { //fix 0.00.. not showing -> NOTE: user won't see
+                    //javascript limitations with very small numbers
+                    display.textContent = firstNumber.toString();
+                }
+            }
+            else if (input == '.' && firstDotUsed == false) {
+                firstNumber = firstNumber + input.toString();
+                display.textContent = parseFloat(firstNumber) + '.';
+                firstDotUsed = true;
+            }
+            else if (isOperator(input)) {
+                operator = input;
+                state = 'number-operation';
+                display.textContent = parseFloat(firstNumber) + operator;
+            }
+            else {
+                resetCalculator();
+            }
+        }
+        else if (state == 'number-operation') {
+            if (isDigit(input)) { //
+                secondNumber = secondNumber + input.toString();
+                state = 'number-operation-number';
+                display.textContent = parseFloat(firstNumber) + operator
+                    + parseFloat(secondNumber);
+            }
+            else {
+                resetCalculator();
+            }
+        }
+        else if (state == 'number-operation-number') {
+            if (isDigit(input)) { //
+                secondNumber = secondNumber + input.toString();
+                if (secondDotUsed == false) {
+                    display.textContent = parseFloat(firstNumber) + operator
+                        + parseFloat(secondNumber);
+                }
+                else {
+                    display.textContent = parseFloat(firstNumber) + operator
+                        + secondNumber.toString();
+                }
+            }
+            else if (input == '.' && secondDotUsed == false) {
+                secondNumber = secondNumber + input.toString();
+                display.textContent = parseFloat(firstNumber) + operator
+                    + parseFloat(secondNumber) + '.';
+                secondDotUsed = true;
+            }
+            else if (input == '=') {
+                //compute and display
+                let result = operate(operator, firstNumber, secondNumber);
+                if (result == "ERROR - cannot divide by 0") {
+                    toggleDisplayMode('word');
+                }
+                resetCalculator();
+                display.textContent = result;
+                //turn result of calculation into input for next one:
+                firstNumber = result.toString();
+                state = 'number';
+                resetDotFlags();
+                //prevent a dot that's carried over from the previous
+                //calculation from being ignored:
+                if (firstNumber.includes('.')) {
+                    firstDotUsed = true;
+                }
+            }
+            else {
+                resetCalculator();
+            }
+        }
+        */
 
     //play a sound depending on the button pressed
     if (input != '=' && input != 'C') {
@@ -178,9 +208,6 @@ function isDigit(input) { //attach this to a button
 }
 
 
-for (button of buttons) {
-    button.addEventListener('click', processInput);
-}
 
 function updateLog(pointerEvent) {
     //pointerEvent is passed byt addEventListener 
